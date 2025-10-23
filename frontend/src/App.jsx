@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import AdminPanel from "./components/AdminPanel"; // we’ll create this next
+import HomePage from "./components/HomePage";
+import TwitterDownloader from "./components/Twitter";
 
 function App() {
   const [admin, setAdmin] = useState(null); // store logged-in admin info
@@ -11,6 +13,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/home" element={<HomePage />} />
         {/* Signup page */}
         <Route 
           path="/signup" 
@@ -28,13 +31,15 @@ function App() {
           path="/admin" 
           element={admin ? <AdminPanel admin={admin} /> : <Navigate to="/login" />} 
         />
+        <Route path="/twitter" element={<TwitterDownloader />} />
 
         {/* Default route */}
         <Route 
           path="/" 
-          element={<Navigate to="/signup" />} 
+          element={<Navigate to="/home" />} 
         />
       </Routes>
+      
     </Router>
   );
 }
