@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import AdminPanel from "./components/AdminPanel"; // we’ll create this next
 import HomePage from "./components/HomePage";
 import TwitterDownloader from "./components/Twitter";
+import ToolsGrid from "./components/ToolsGrid";
 
 function App() {
   const [admin, setAdmin] = useState(null); // store logged-in admin info
@@ -38,7 +39,9 @@ function App() {
           path="/" 
           element={<Navigate to="/home" />} 
         />
+        <Route path="/tools" element={<ToolsGrid />} />
       </Routes>
+      
       
     </Router>
   );
