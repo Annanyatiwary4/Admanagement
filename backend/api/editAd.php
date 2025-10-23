@@ -2,6 +2,7 @@
 header("Content-Type: application/json");
 include "../config/db.php";
 include "../utils/sanitize.php";
+include "cors.php";
 
 $data = json_decode(file_get_contents("php://input"), true);
 

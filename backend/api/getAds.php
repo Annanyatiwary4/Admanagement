@@ -1,6 +1,7 @@
 <?php
 header("Content-Type: application/json");
 include "../config/db.php";
+include "cors.php";
 
 $sql = "SELECT * FROM ads";
 $result = $conn->query($sql);
