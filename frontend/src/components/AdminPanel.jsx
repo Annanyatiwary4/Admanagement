@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { getAds, addAd, editAd, deleteAd, toggleAdStatus } from "../api/Api";
+import Header from "./Header"; // Import the Header
 import AdForm from "./AdForm";
 import AdList from "./AdList";
+import { useNavigate } from "react-router-dom";
+
 
 function AdminPanel({ admin }) {
   const [ads, setAds] = useState([]);
   const [editingAd, setEditingAd] = useState(null);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   // Fetch all ads
   const fetchAds = async () => {
@@ -55,28 +59,40 @@ function AdminPanel({ admin }) {
     fetchAds();
   };
 
+  // Handle logout (example)
+  const handleLogout = () => {
+    console.log("Admin logged out");
+    navigate("/home");
+    // You can clear auth token or redirect here
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-2xl font-bold mb-6 text-gray-700">Admin Panel</h1>
-      <p className="mb-4 text-gray-600">Logged in as: {admin.username}</p>
+    <div className="min-h-screen bg-gray-100">
+      {/* Header */}
+      <Header ads={ads.filter(ad => ad.position === "header" && ad.status === "active")} user={admin} onLogout={handleLogout} />
 
-      {/* Ad Form */}
-      <div className="mb-8">
-        <AdForm onSubmit={handleSubmitAd} editingAd={editingAd} />
+      {/* Admin Panel Content */}
+      <div className="p-6 mt-6">
+        <h1 className="text-2xl font-bold mb-6 text-gray-700">Admin Panel</h1>
+
+        {/* Ad Form */}
+        <div className="mb-8">
+          <AdForm onSubmit={handleSubmitAd} editingAd={editingAd} />
+        </div>
+
+        {/* Success/Error message */}
+        {message && (
+          <p className="mb-4 text-green-600 font-semibold">{message}</p>
+        )}
+
+        {/* Ad List */}
+        <AdList
+          ads={ads}
+          onEdit={(ad) => setEditingAd(ad)}
+          onDelete={handleDelete}
+          onToggleStatus={handleToggleStatus}
+        />
       </div>
-
-      {/* Success/Error message */}
-      {message && (
-        <p className="mb-4 text-green-600 font-semibold">{message}</p>
-      )}
-
-      {/* Ad List */}
-      <AdList
-        ads={ads}
-        onEdit={(ad) => setEditingAd(ad)}
-        onDelete={handleDelete}
-        onToggleStatus={handleToggleStatus}
-      />
     </div>
   );
 }
