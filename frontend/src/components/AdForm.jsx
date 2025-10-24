@@ -24,7 +24,7 @@ function AdForm({ onSubmit, editingAd }) {
   };
 
   return (
-    <div className="bg-white/60 backdrop-blur-lg border border-white/30 rounded-2xl shadow-xl p-6 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]">
+    <div className="bg-white/60 backdrop-blur-lg border border-black  rounded-2xl shadow-xl p-6 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">
         {editingAd ? "Edit Ad" : "Add New Ad"}
       </h2>
