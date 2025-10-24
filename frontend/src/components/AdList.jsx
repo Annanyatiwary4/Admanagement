@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator
+} from "@/components/ui/dropdown-menu";
+import { MoreVertical } from "lucide-react";
+import { Badge } from "@/components/ui/badge"; // <-- Import ShadCN Badge
 
-function AdList({ ads, onEdit, onDelete, onToggleStatus }) {
+function AdList({ ads, onEdit, onDelete, onToggleStatus, onAddClick }) {
   const [stats, setStats] = useState({});
 
-  // Load stats from localStorage for all ads
   useEffect(() => {
     const loadedStats = {};
     ads.forEach((ad) => {
@@ -26,62 +35,65 @@ function AdList({ ads, onEdit, onDelete, onToggleStatus }) {
               <th className="py-3 px-4">Type</th>
               <th className="py-3 px-4">Position</th>
               <th className="py-3 px-4">Status</th>
-              <th className="py-3 px-4"> Impressions</th>
-              <th className="py-3 px-4"> Clicks</th>
-              <th className="py-3 px-4">Actions</th>
+              <th className="py-3 px-4">Impressions</th>
+              <th className="py-3 px-4">Clicks</th>
+              <th className="py-3 px-4 text-center">Actions</th>
             </tr>
           </thead>
 
           <tbody>
             {ads.map((ad) => {
               const adStats = stats[ad.id] || { impressions: 0, clicks: 0 };
+              const isActive = ad.status === "active";
+
               return (
-                <tr
-                  key={ad.id}
-                  className="bg-white/70 backdrop-blur-sm border-b border-white/30 hover:bg-white/80 transition-all duration-300"
-                >
+                <tr key={ad.id} className="bg-white/70 backdrop-blur-sm border-b border-white/30 hover:bg-white/80 transition-all duration-300">
                   <td className="py-3 px-4 font-semibold text-gray-800">{ad.id}</td>
                   <td className="py-3 px-4 text-gray-700">{ad.title}</td>
                   <td className="py-3 px-4 text-gray-700">{ad.type}</td>
                   <td className="py-3 px-4 text-gray-700">{ad.position}</td>
-                  <td className="py-3 px-4 font-semibold text-gray-800">{ad.status}</td>
+                  
+                  {/* Status Badge */}
+                  <td className="py-3 px-4">
+  <Badge className={isActive ? "bg-green-500 text-white" : "bg-gray-400 text-white"}>
+    {isActive ? "Active" : "Inactive"}
+  </Badge>
+</td>
 
-                  {/* Stats */}
-                  <td className="py-3 px-4 text-gray-700 font-medium">
-                    {adStats.impressions}
-                  </td>
-                  <td className="py-3 px-4 text-gray-700 font-medium">
-                    {adStats.clicks}
-                  </td>
 
-                  {/* Action buttons */}
-                  <td className="py-3 px-4 flex flex-wrap gap-3">
-                    <button
-                      onClick={() => onEdit(ad)}
-                      className="px-4 py-1.5 rounded-xl font-semibold bg-blue-400 hover:bg-blue-500 text-white transition-colors duration-300"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => onDelete(ad.id)}
-                      className="px-4 py-1.5 rounded-md font-semibold bg-blue-500 hover:bg-blue-400 text-white transition-colors duration-300"
-                    >
-                      Delete
-                    </button>
-                    <button
-                      onClick={() => onToggleStatus(ad)}
-                      className={`px-4 py-1.5 rounded-2xl font-semibold text-white transition-colors duration-300 ${
-                        ad.status === "active"
-                          ? "bg-green-500 hover:bg-green-600"
-                          : "bg-gray-500 hover:bg-gray-600"
-                      }`}
-                    >
-                      {ad.status === "active" ? "Deactivate" : "Activate"}
-                    </button>
+                  <td className="py-3 px-4 text-gray-700 font-medium">{adStats.impressions}</td>
+                  <td className="py-3 px-4 text-gray-700 font-medium">{adStats.clicks}</td>
+
+                  {/* Dropdown for actions */}
+                  <td className="py-3 px-4 text-center">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="p-2 rounded-full hover:bg-gray-100">
+                          <MoreVertical className="w-5 h-5 text-gray-500" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-40">
+                        <DropdownMenuItem onClick={() => onEdit(ad)}>Edit</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onToggleStatus(ad)}>
+                          {isActive ? "Deactivate" : "Activate"}
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className="text-red-600" onClick={() => onDelete(ad.id)}>Delete</DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </td>
                 </tr>
               );
             })}
+
+            {/* Add New Ad row */}
+            <tr>
+              <td colSpan="8" className="py-4 px-4 text-center">
+                <Button onClick={onAddClick} variant="outline" className="flex items-center justify-center gap-2 mx-auto">
+                  + Add New Ad
+                </Button>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
