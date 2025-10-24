@@ -65,11 +65,12 @@ function AdminPanel({ admin }) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-100 to-blue-50">
       {/* Header */}
-      <Header
-        ads={ads.filter((ad) => ad.position === "header" && ad.status === "active")}
-        user={admin}
-        onLogout={handleLogout}
-      />
+     <Header
+  ads={[]} // no header ads in admin panel
+  user={admin}
+  onLogout={handleLogout}
+/>
+
 
       <div className="p-6 mt-6 space-y-8">
         <h1 className="text-3xl font-extrabold text-gray-800 mb-4">Admin Panel</h1>

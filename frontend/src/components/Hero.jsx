@@ -3,15 +3,15 @@ import { getAds } from "../api/Api";
 import Ad from "./Ad";
 
 function Hero() {
-  const [footerAds, setFooterAds] = useState([]);
+  const [headerAds, setHeaderAds] = useState([]);
 
   useEffect(() => {
     const fetchAds = async () => {
       try {
         const res = await getAds();
-        // using "footer" since "banner" doesn't exist yet
-        setFooterAds(
-          res.data.filter((ad) => ad.position === "footer" && ad.status === "active")
+        // filter for "header" ads instead of "footer"
+        setHeaderAds(
+          res.data.filter((ad) => ad.position === "header" && ad.status === "active")
         );
       } catch (err) {
         console.error("Error fetching ads:", err);
@@ -37,17 +37,17 @@ function Hero() {
         </button>
       </div>
 
-      {/* Show footer ads as banner below buttons */}
+      {/* Show header/banner ads as banner below buttons */}
       <div className="container mx-auto px-4 mt-8 flex justify-center">
-        {footerAds.length > 0 ? (
+        {headerAds.length > 0 ? (
           <div className="w-full md:w-10/12 lg:w-8/12">
-            {footerAds.map((ad) => (
+            {headerAds.map((ad) => (
               <Ad key={ad.id} ad={ad} />
             ))}
           </div>
         ) : (
           <div className="w-full md:w-10/12 lg:w-8/12 rounded-lg py-8 text-gray-500 italic">
-            
+            {/* Optional placeholder */}
           </div>
         )}
       </div>

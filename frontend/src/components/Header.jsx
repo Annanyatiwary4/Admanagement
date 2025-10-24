@@ -86,14 +86,7 @@ function Header({ ads, user, onLogout }) {
         </div>
       </div>
 
-      {/* Header Ads */}
-      {ads.length > 0 && (
-        <div className="mt-2 container mx-auto">
-          {ads.map((ad) => (
-            <Ad key={ad.id} ad={ad} />
-          ))}
-        </div>
-      )}
+     
     </header>
   );
 }
